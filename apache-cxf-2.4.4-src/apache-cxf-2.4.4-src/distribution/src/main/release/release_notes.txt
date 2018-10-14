@@ -1,0 +1,137 @@
+Apache CXF 2.4.4 Release Notes
+
+1. Overview
+
+The 2.4.x versions of Apache CXF are significant new versions of CXF 
+that provides several new features and enhancements.  
+
+New features include: 
+* Log Browser Console - see the logbrowser sample for an example
+* Transformation feature provides for a fast and effective way to transform inbound 
+  and/or outbound XML messages, please see the TransformationFeature page for more 
+  information.
+* JIBX databinding
+* Faster startup and reduced spring configuration. The Spring support has been redone
+  to be based on the ExtensionManagerBus. This results in much faster startup. It also
+  means that all of the imports of META-INF/cxf/cxf-extension-*.xml are no longer 
+  needed and are deprecated.  Additionaly, all features are now available when 
+  using the ExtensionManager Bus instead of being forced to use Spring.
+* WSS4J has been updated from 1.5.x to 1.6. See http://ws.apache.org/wss4j/wss4j16.html
+  for the list of new features and upgrade notes for Apache WSS4J 1.6.  Some notable new 
+  features for CXF users include:
+    * SAML2 support: WSS4J 1.6 includes full support for creating, manipulating and 
+    parsing SAML2 assertions, via the Opensaml2 library. See
+    http://coheigea.blogspot.com/2011/02/support-for-saml2-assertions-in-wss4j.html 
+    for more information.
+    * Performance work: A general code-rewrite has been done with a focus on improving 
+    performance.
+    * Support for Crypto trust-stores: WSS4J 1.6 separates the concept of keystore and 
+    truststores. See http://coheigea.blogspot.com/2011/01/wss4j-16-crypto-property-change.html
+    for more information.
+ * WS-SecurityPolicy support for SAML tokens.
+ * Initial OSGi Blueprint support for JAX-WS and JAX-RS
+ * A simple framework for building an STS was added to CXF's WS-Security module.   See the
+   sts_issue_operation sample to see this being used to generate SAML tokens based on X509 
+   certs used for the authentication.
+
+
+Users are encourage to review the migration guide at:
+http://cxf.apache.org/docs/24-migration-guide.html
+for further information and requirements for upgrading to 2.4.0.   In particular, the upgrades 
+to WSS4J and Neethi will require some migration work if you use the WSS4J API's directly or
+have created your own Policy objects or builders.   Additionally, XmlSchema was update to 2.0 
+so any custom Aegis types may need to be updated.
+
+
+2.4.4 fixes over 35 JIRA issues reported by users and the community.
+
+
+
+2. Installation Prerequisites 
+
+Before installing Apache CXF, make sure the following products,
+with the specified versions, are installed on your system:
+
+    * Java 5 Development Kit
+    * Apache Maven 2.2.1 or 3.x
+    * Some samples can be built with Apache Ant 1.6 or later
+
+
+3.  Integrating CXF Into You Application
+
+If you use Maven to build your application, you need merely add
+appropriate dependencies. See the pom.xml files in the samples.
+
+If you don't use Maven, you'll need to add one or more jars to your
+classpath. The file lib/WHICH_JARS should help you decide which 
+jars you need.
+
+4. Building the Samples
+
+Building the samples included in the binary distribution is easy. Change to
+the samples directory and follow the build instructions in the README.txt file 
+included with each sample.
+
+5. Reporting Problems
+
+If you have any problems or want to send feedback of any kind, please e-mail the
+CXF dev list, dev@cxf.apache.org.  You can also file issues in JIRA at:
+
+http://issues.apache.org/jira/browse/CXF
+
+
+6. Migration notes:
+
+See the migration guide at:
+http://cxf.apache.org/docs/24-migration-guide.html
+for caveats when upgrading from CXF 2.3.x to 2.4.x.
+
+7. Specific issues, features, and improvements fixed in this version
+
+Release Notes - CXF - Version 2.4.4
+** Bug
+
+    * [CXF-3829] - NPE in wsdl2java if soap:binding tag is omitted
+    * [CXF-3840] - WS-Addressing and WS-RM: Nested Reference Parameters in request are not supported and become concatenated in the response to client
+    * [CXF-3845] - Incompatibility between Derby 10.8 and WS-RM RMTxStore
+    * [CXF-3846] - NullPointerException when requesting ?wsdl using AegisDatabinding and @SchemaValidation
+    * [CXF-3847] - ResponseBuilderImpl.status - validation against instance var instead of parameter
+    * [CXF-3853] - RMTxStore: Vendor specific condition check
+    * [CXF-3854] - java.lang.StringIndexOutOfBoundsException is thrown when generating sources for a WADL with WADL2Java Maven plugin
+    * [CXF-3855] - Incorrect character escaping by URIParserUtil
+    * [CXF-3856] - cxf-codegen-plugin cannot allow element references for wrapped style
+    * [CXF-3860] - CXF sample "restful_dispatch" Readme.txt need to be updated
+    * [CXF-3862] - BindingCustomization does not work for the wsdl url like file://home/usr/../../wsdl/helloworld.wsdl
+    * [CXF-3866] - "CXF-Service List" page mess up in some case
+    * [CXF-3871] - NPE is thrown when ws-addr is configured using policy and ws-addr Action is absent
+    * [CXF-3875] - WADL generator fails if no parameter type is specified
+    * [CXF-3878] - org.apache.cxf.jaxrs.impl.WebApplicationExceptionMapper does not print the WebApplicationException stack trace even when log level is set to FINEST
+    * [CXF-3884] - [JAXB] DynamicClientFactory#setupClasspath does not handle URL encoded file names correctly
+
+** Improvement
+
+    * [CXF-3797] - WADL2Java Generator improvements
+    * [CXF-3849] - JAXBElementProvider prints Exception on System.err
+    * [CXF-3852] - Enable the validate profile of karaf feature
+    * [CXF-3857] - Support for subclassing of STSClient and adding Claims to RST
+    * [CXF-3858] - It will be helpful to add the cause exception message, when throw the fault from XMLStreamDataReader and XMLStreamDataWriter
+    * [CXF-3863] - Warning info since build service from wsdl of JaxWsServiceFactoryBean once I located the wsdl location
+    * [CXF-3869] - Improve RequestDispatcherProvider configuration
+    * [CXF-3872] - Confusing error message "Problem writing SAAJ model to stream" in case if service not avalable (patch)
+    * [CXF-3873] - Detail exceptions in JAASLoginInInterceptor (patch)
+    * [CXF-3874] - Update RolePrefixSecurityContext to recognize roles by full or simple class name of the class
+    * [CXF-3877] - CxfServlet displays wrong endpoints.
+    * [CXF-3879] - Add the ability to enforce a maximum attachment size
+    * [CXF-3880] - TransformReader's append-child option should insert the child as the last element
+    * [CXF-3881] - WADL Generator should optionally generate Enums
+    * [CXF-3887] - wsdl2java only shows first error from JAXB/xjc
+
+** New Feature
+
+    * [CXF-3205] - @XmlJavaTypeAdapter at package level versus ASM generation of wrappers
+    * [CXF-3225] - Add support for saml tokens in sp:InitiatorToken
+    * [CXF-3389] - Integrate CXF JAX-RS with EJB
+
+** Task
+
+    * [CXF-3892] - upgrade to servicemix specs 1.9.0

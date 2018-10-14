@@ -1,0 +1,193 @@
+Apache CXF 2.4.2 Release Notes
+
+1. Overview
+
+The 2.4.x versions of Apache CXF are significant new versions of CXF 
+that provides several new features and enhancements.  
+
+New features include: 
+* Log Browser Console - see the logbrowser sample for an example
+* Transformation feature provides for a fast and effective way to transform inbound 
+  and/or outbound XML messages, please see the TransformationFeature page for more 
+  information.
+* JIBX databinding
+* Faster startup and reduced spring configuration. The Spring support has been redone
+  to be based on the ExtensionManagerBus. This results in much faster startup. It also
+  means that all of the imports of META-INF/cxf/cxf-extension-*.xml are no longer 
+  needed and are deprecated.  Additionaly, all features are now available when 
+  using the ExtensionManager Bus instead of being forced to use Spring.
+* WSS4J has been updated from 1.5.x to 1.6. See http://ws.apache.org/wss4j/wss4j16.html
+  for the list of new features and upgrade notes for Apache WSS4J 1.6.  Some notable new 
+  features for CXF users include:
+    * SAML2 support: WSS4J 1.6 includes full support for creating, manipulating and 
+    parsing SAML2 assertions, via the Opensaml2 library. See
+    http://coheigea.blogspot.com/2011/02/support-for-saml2-assertions-in-wss4j.html 
+    for more information.
+    * Performance work: A general code-rewrite has been done with a focus on improving 
+    performance.
+    * Support for Crypto trust-stores: WSS4J 1.6 separates the concept of keystore and 
+    truststores. See http://coheigea.blogspot.com/2011/01/wss4j-16-crypto-property-change.html
+    for more information.
+ * WS-SecurityPolicy support for SAML tokens.
+ * Initial OSGi Blueprint support for JAX-WS and JAX-RS
+ * A simple framework for building an STS was added to CXF's WS-Security module.   See the
+   sts_issue_operation sample to see this being used to generate SAML tokens based on X509 
+   certs used for the authentication.
+
+
+Users are encourage to review the migration guide at:
+http://cxf.apache.org/docs/24-migration-guide.html
+for further information and requirements for upgrading to 2.4.0.   In particular, the upgrades 
+to WSS4J and Neethi will require some migration work if you use the WSS4J API's directly or
+have created your own Policy objects or builders.   Additionally, XmlSchema was update to 2.0 
+so any custom Aegis types may need to be updated.
+
+
+2.4.2 fixes over 90 JIRA issues reported by users and the community.
+
+
+
+2. Installation Prerequisites 
+
+Before installing Apache CXF, make sure the following products,
+with the specified versions, are installed on your system:
+
+    * Java 5 Development Kit
+    * Apache Maven 2.2.1 or 3.x
+    * Some samples can be built with Apache Ant 1.6 or later
+
+
+3.  Integrating CXF Into You Application
+
+If you use Maven to build your application, you need merely add
+appropriate dependencies. See the pom.xml files in the samples.
+
+If you don't use Maven, you'll need to add one or more jars to your
+classpath. The file lib/WHICH_JARS should help you decide which 
+jars you need.
+
+4. Building the Samples
+
+Building the samples included in the binary distribution is easy. Change to
+the samples directory and follow the build instructions in the README.txt file 
+included with each sample.
+
+5. Reporting Problems
+
+If you have any problems or want to send feedback of any kind, please e-mail the
+CXF dev list, dev@cxf.apache.org.  You can also file issues in JIRA at:
+
+http://issues.apache.org/jira/browse/CXF
+
+
+6. Migration notes:
+
+See the migration guide at:
+http://cxf.apache.org/docs/24-migration-guide.html
+for caveats when upgrading from CXF 2.3.x to 2.4.x.
+
+7. Specific issues, features, and improvements fixed in this version
+
+
+** Bug
+    * [CXF-3159] - JSONProvider has hard dependency on Jettison in Websphere
+    * [CXF-3584] - ?wsdl does not rewrite soap:address for soap1.2 service
+    * [CXF-3585] - WSDLGetInterceptor throws NullPointException when using EndpointSelectionInterceptor
+    * [CXF-3586] - CXF JAX-RS clients ignore custom service QNames when creating the service model 
+    * [CXF-3590] - Exception when setPrettyLogging(true) for LoggingInInterceptor (or LoggingOutInterceptor)
+    * [CXF-3591] - the generated wadl contain empty grammar section even though only jaxb classes are used
+    * [CXF-3594] - WS-RM server does not honor the Expire value set in th eclient's CreateSequence message
+    * [CXF-3597] - WS-RM client keeps using an expired source sequence
+    * [CXF-3598] - JAXBDataBinding swallowing exception
+    * [CXF-3605] - Regression in SecureConversationInInterceptor.STSInvoker Expiry value
+    * [CXF-3606] - CXF STS Provider framework only works with Issue Operation
+    * [CXF-3608] - CXF JAX-RS selection algorithm always prefers resource methods to subresource locators
+    * [CXF-3609] - Oneway CXF service having problem with Gemini-Web\u200b/Tomcat-ca\u200btalina
+    * [CXF-3614] - Thread leak in WorkQueueManagerImpl and AutomaticWorkQueueImpl when we use it in tomcat
+    * [CXF-3618] - Extremely bad performance in JMS transport when the MessageListenerContainer is used
+    * [CXF-3620] - Chunking is not supported for non-empty HTTP PUT requests
+    * [CXF-3623] - WSRM AckRange's number parsing not tolerating whitespace after CXF 2.4 upgrade
+    * [CXF-3624] - BinarySecurityToken validated by STSTokenValidator doesn't satisfy IssuedToken policy
+    * [CXF-3625] - CXF-3229 all over again
+    * [CXF-3627] - high load may cause deadlocks
+    * [CXF-3628] - SEVERE message seen in wsdl_first_pure_xml example
+    * [CXF-3631] - WADL Generator ignores @PathParams mapped on class fields
+    * [CXF-3637] - wsdl_first_https README.txt isn't correct
+    * [CXF-3638] - wsdl_first_dynamic_client example doesn't work
+    * [CXF-3641] - CXF JAXRS Proxies can not handle explicilt collections of form parameters
+    * [CXF-3645] - configuration_interceptor simple doesn't work due to missing configuration file
+    * [CXF-3648] - Wrong scope for commons-pool
+    * [CXF-3649] - Out policies are not being applied for an unchecked fault
+    * [CXF-3650] - jax-rs basic example doesn't work when there's a space in file path url
+    * [CXF-3655] - Role based authorization not working with DefaultSecurityContext (i.e., when using JAASLoginInterceptor with non-prefixed role names)
+    * [CXF-3656] - Wadl generation problem with @FormParam cause IllegalStateException
+    * [CXF-3660] - JAXRS proxies should not append single slash path values 
+    * [CXF-3662] - wadl2java : Return types aren't generated properly on server interfaces for methods with more than 1 response element.
+    * [CXF-3664] - wadl2java : xsd data types aren't mapped to java data types properly if they use mixed case.
+    * [CXF-3665] - server-sid\u200be endpoint cleanup problem in spring based CXF scenarios in OSGi
+    * [CXF-3667] - Content negotiation & ResponseBuilder without entity - wrong Content-Type
+    * [CXF-3668] - Duplicate Poclies added in Java-First approach
+    * [CXF-3670] - Regression CXF-3159: Jettison required for json processing with some classloader implementations
+    * [CXF-3675] - DOMUtils Caching vs. ClassLoading problems
+    * [CXF-3678] - BlueprintBeanLocator throw NPE when looking up Bean instance with Type class
+    * [CXF-3679] - CXFNonSpringJaxrsServlet can not register CXF in/out interceptors when Application is also registered
+    * [CXF-3681] - Transform feature can loop endless in combination with PartialXMLStreamReader
+    * [CXF-3684] - CXF does not create a Holder for the headers
+    * [CXF-3689] - path_info should not be contextPath + req.getPathInfo()
+    * [CXF-3693] - SecurityTokenServiceProvider does not handle exceptions properly
+    * [CXF-3695] - Jetty startup is not threadsafe
+    * [CXF-3696] - Race condition in BusFactory
+    * [CXF-3697] - the clientDestroyed() of ClientLifeCycleListener impl not be called when the service with jaxws:client undeployed
+    * [CXF-3699] - Wsdl2java generates illegal code for faults
+    * [CXF-3700] - the stopServer() method in ServerLifeCycleListener has been invoked twice when a service stopped
+    * [CXF-3703] - Avoid overriding Content-Type in WebClient for GET requests
+    * [CXF-3704] - Configured namespace map entry overwritten in AegisJSONProvider
+    * [CXF-3707] - CXF can not generate right schema information if a empty schema-location is passed into the ServerFactoryBean
+    * [CXF-3708] - A validated and transformed SAML Token is not cached in the STSTokenValidator
+    * [CXF-3709] - Incorrect URL handling in org.apache.cxf.transport.servlet.BaseUrlHelper method getBaseURL
+    * [CXF-3723] - clientCreated() of ClientLifeCycleListener can't be invoked on Spring created clients
+    * [CXF-3724] - Problem with CXF migration !!
+    * [CXF-3727] - depends-on attribute not working on factory based beans
+    * [CXF-3729] - TLSParameterJaxBUtils is unable to use keystores with empty file/url/resource.
+
+** Improvement
+    * [CXF-3102] - Update Apache CXF's main pom.xml file
+    * [CXF-3583] - Refactor ServletController to get only chosen destination's address overridden
+    * [CXF-3596] - Update FailoverTargetSelector to do optional time delays between retries and retrying the same address for a number of times
+    * [CXF-3600] - add OBR resolver to karaf features descriptor
+    * [CXF-3602] - Add command line switch to wsdl2java to enable async methods
+    * [CXF-3603] - Add command line switch to wsdl2java to keep methods in "bare" form.
+    * [CXF-3604] - Add command line switch to wsdl2java to enable mime mappings
+    * [CXF-3610] - Enhance WebClient to support posting explicit collections
+    * [CXF-3615] - BlueprintBus should specify the ClassLoader to avoid issues by creating from other framework
+    * [CXF-3622] - Migrate to Apache Commons Pool 1.5.6 from 1.5.5.
+    * [CXF-3629] - mbean WorkQueueManager misses information about thread pool status
+    * [CXF-3633] - Provide a way of disabling sending an AppliesTo element when requesting a security token via the STSClient
+    * [CXF-3634] - Avoid risk of deadlock and speed up execution in JDKBugHacks.doHacks()
+    * [CXF-3642] - js_browser_client_simple demo throws exception with stack trace in client output but README.txt does not mention it.
+    * [CXF-3643] - Migrate to Jetty 7.4.3 from 7.4.2.
+    * [CXF-3647] - Add schema validation explaination for samples/wsdl_first_xmlbeans README
+    * [CXF-3654] - Non-informative exception thrown in JAXRSUtils
+    * [CXF-3658] - Make NamePasswordCallback used for JAAS login more flexible so that it can handle non-standard password callback objects (e.g., Jetty's)
+    * [CXF-3663] - Migrate to Jetty 7.4.4 from 7.4.3.
+    * [CXF-3672] - add a featrue to Soap11FaultOutInterceptor to custom http response status code
+    * [CXF-3674] - Support the Kerberos Token Profile
+    * [CXF-3676] - Add @threadSafe to all maven-plugins for parallel build feature of Maven3
+    * [CXF-3680] - Logging locations are hidden with Slf4jLogger
+    * [CXF-3682] - CXF Example: java_first_jaxws, Warnings: Unused imports
+    * [CXF-3692] - Enhancing the element-append and drop options of InTransformReader used by transform feature
+    * [CXF-3694] - Migrate to Jetty 7.4.5 from 7.4.4.
+    * [CXF-3702] - It would be nice if CXF proxies implemented Closeable
+    * [CXF-3710] - Spring created clients should be destroyed when the context is closed
+    * [CXF-3711] - Closing/destroying a client could initialize the conduits
+    * [CXF-3713] - ServletContextResourceResolver causes problems in GAE
+    * [CXF-3714] - Add property which can be used to get multiple HTTP header values added as separate headers
+    * [CXF-3726] - Ability to configure "pretty" logging from annotation and feature.
+    * [CXF-3728] - The lifecylcelisteners should be detected from the context automatically.
+
+** Task
+    * [CXF-3673] - Make ResponseBuilder.tag produce consistent output with EntityTag and String parameters
+    * [CXF-3716] - Move get classloader from bus extension to the constructor to imporve the perfomance
+    * [CXF-3730] - Remove Apache Jakarta ORO from the distribution.
+
+
